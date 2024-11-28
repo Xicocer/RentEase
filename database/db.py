@@ -11,22 +11,13 @@ try:
 except Exception as ex:
     print(ex)
 
-def auth(login, password):
+def reg(name, password_confirm,password ,email):
     with connect:
-        cursor.execute(f'SELECT * FROM `user` WHERE `login`="{login}" AND `password`="{password}"')
-        result = cursor.fetchall()
-        if len(result)!=0:
-            return result
-        else:
-            return "Неверный логин или пароль"
-
-def reg(login, password):
-    with connect:
-        cursor.execute(f'SELECT `login` FROM `user` WHERE `login`="{login}"')
+        cursor.execute(f'SELECT id, email FROM user WHERE email="{email}"')
         result = cursor.fetchall()
         if len(result)!=0:
             return "Такой логин уже существует"
-        
+
         else:
             if len(password) < 8:
                 return "Ваш пароль менее 8 символов"
@@ -34,20 +25,22 @@ def reg(login, password):
                 return "Убедитесь, что в вашем пароле есть цифра"
             elif not any(map(str.isupper, password)):
                 return "Убедитесь, что в вашем пароле есть заглавная буква"
+            elif password == password_confirm :
+                return "Пароли отличаются"
             else:
-                print("Дошёл")
-                cursor.execute(f"INSERT INTO `user`(`login`, `password`, `is_admin`) VALUES ('{login}','{password}', {False})")
+                cursor.execute(f"INSERT INTO user(email, password, name) VALUES ('{email}','{password}', {name})")
                 connect.commit()
-                return "Вы успешно зарегестрировались"
-
-def catalog():
+                return "Вы успешно зарегистрировались"
+def auth(email, password):
     with connect:
-        cursor.execute(f'SELECT * FROM `item`')
+        cursor.execute(f'SELECT * FROM user WHERE email="{email}" AND password = "{password}"')
         result = cursor.fetchall()
+    if len(result)==0:
+        return "Данные введены не верно"
+    else :
         return result
-
-def feedback(id_user):
+def get_feadbacks(id_item):
     with connect:
-        cursor.execute(f'SELECT * FROM `feedback` WHERE `id_user` = "{id_user}"')
+        cursor.execute(f"SELECT * FROM feedback WHERE active = 1 AND id_item = {id_item}")
         result = cursor.fetchall()
         return result
