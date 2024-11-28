@@ -1,17 +1,17 @@
 from tkinter import *
-import psycopg2
+import pymysql
 
-conn = psycopg2.connect(user="postgres",
-                        password="root",
+conn = pymysql.connect(user="root",
+                        password="",
                         host="localhost",
-                        port="5432",
                         database="renteasy")
 with conn:
     cursor = conn.cursor()
 
     def addBut():
-        cursor.execute(f'SELECT `id`, `login`, `password` FROM `user` WHERE `login`="{login.get()}" AND `password`="{Password.get()}"')
-        records =cursor.fetchall()
+        print(Password.get())
+        cursor.execute(f"""SELECT * FROM public."user" WHERE login = '{str(login.get())}' AND password = '{str(Password.get())}';""")
+        records=cursor.fetchall()
         print(records)
         if len(records)!=0:
             text.delete("0.0",END)  
@@ -22,10 +22,10 @@ with conn:
         
 
     def resetList():
-        cursor.execute("SELECT * FROM `user` ")
+        cursor.execute(""" SELECT * FROM public."user" """)
     
     def register():
-        cursor.execute(f'SELECT `id`, `login` FROM `user` WHERE `login`="{login.get()}"')
+        cursor.execute(f"""SELECT * FROM public."user" WHERE login = '{login.get()}';""")
         prov=cursor.fetchall()
         if len(prov)!=0:
             text.delete("0.0",END)
@@ -42,7 +42,7 @@ with conn:
                 text.delete("0.0",END)
                 text.insert("1.0","Убедитесь, что в вашем пароле есть заглавная буква")
             else:   
-                cursor.execute(f"INSERT INTO `user`(`login`, `password`) VALUES ('{login.get()}','{Password.get()}')")
+                cursor.execute(f"""INSERT INTO public."user"("login", "password", "is_admin") VALUES ('{login.get()}','{Password.get()}', {False})""")
                 conn.commit()
                 resetList()
                 text.delete("0.0",END)
@@ -51,8 +51,8 @@ with conn:
 root = Tk()
 root.configure(bg="#ffffff")
 root.geometry("600x400")
-login_btn = PhotoImage(file = "2.png")
-reg_btn = PhotoImage(file = "3.png")
+login_btn = PhotoImage(file = "./image/2.png")
+reg_btn = PhotoImage(file = "./image/3.png")
 
 
 text = Text(height=2, width= 29,background="#ffffff")
