@@ -3,7 +3,6 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.uic import loadUi
 import database.db as db
-
 class Login(QDialog):
     def __init__(self):
         super(Login,self).__init__()
