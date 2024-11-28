@@ -20,9 +20,9 @@ def auth(login, password):
         else:
             return "Неверный логин или пароль"
 
-def reg(login, password, name, lastname, age):
+def reg(login, password):
     with connect:
-        cursor.execute(f'SELECT `id`, `login` FROM `user` WHERE `login`="{login}"')
+        cursor.execute(f'SELECT `login` FROM `user` WHERE `login`="{login}"')
         result = cursor.fetchall()
         if len(result)!=0:
             return "Такой логин уже существует"
@@ -34,8 +34,9 @@ def reg(login, password, name, lastname, age):
                 return "Убедитесь, что в вашем пароле есть цифра"
             elif not any(map(str.isupper, password)):
                 return "Убедитесь, что в вашем пароле есть заглавная буква"
-            else:   
-                cursor.execute(f"INSERT INTO `user`(`login`, `password`, `name`, `lastname`, `age`, `is_admin`) VALUES ('{login}','{password}', '{name}', '{lastname}', {age}, {False})")
+            else:
+                print("Дошёл")
+                cursor.execute(f"INSERT INTO `user`(`login`, `password`, `is_admin`) VALUES ('{login}','{password}', {False})")
                 connect.commit()
                 return "Вы успешно зарегестрировались"
 
@@ -50,4 +51,3 @@ def feedback(id_user):
         cursor.execute(f'SELECT * FROM `feedback` WHERE `id_user` = "{id_user}"')
         result = cursor.fetchall()
         return result
-print(auth("root", "12345678B"))
