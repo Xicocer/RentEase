@@ -31,6 +31,7 @@ def reg(name, password_confirm,password ,email):
                 cursor.execute(f"INSERT INTO user(email, password, name) VALUES ('{email}','{password}', {name})")
                 connect.commit()
                 return "Вы успешно зарегистрировались"
+
 def auth(email, password):
     with connect:
         cursor.execute(f'SELECT * FROM user WHERE email="{email}" AND password = "{password}"')
@@ -39,8 +40,25 @@ def auth(email, password):
         return "Данные введены не верно"
     else :
         return result
+
 def get_feadbacks(id_item):
     with connect:
         cursor.execute(f"SELECT * FROM feedback WHERE active = 1 AND id_item = {id_item}")
         result = cursor.fetchall()
         return result
+
+
+def get_items():
+    with connect:
+        cursor.execute(f"SELECT * FROM `items` ORDER BY `id` DESC")
+        result = cursor.fetchell()
+        return result
+
+
+def get_search(title):
+    cursor.execute(f"SELECT * FROM `items` WHERE `title` LIKE '%{title}%'")
+    result = cursor.fetchall()
+    if len(result) != 0:
+        return result
+    else:
+        return "Такого товара нет"
