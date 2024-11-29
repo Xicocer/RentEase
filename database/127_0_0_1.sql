@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Ноя 28 2024 г., 21:20
--- Версия сервера: 10.4.32-MariaDB
--- Версия PHP: 8.2.12
+-- Время создания: Ноя 29 2024 г., 10:48
+-- Версия сервера: 10.4.28-MariaDB
+-- Версия PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,6 +33,21 @@ CREATE TABLE `category` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `category` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `category`
+--
+
+INSERT INTO `category` (`id`, `category`) VALUES
+(1, 'Компьютеры'),
+(2, 'Приставки'),
+(3, 'Принтеры'),
+(4, 'Сканеры'),
+(5, 'Самокаты'),
+(6, 'Инструменты'),
+(7, 'Быт'),
+(8, 'Литература'),
+(9, 'CD, DVD');
 
 -- --------------------------------------------------------
 
@@ -65,6 +80,13 @@ CREATE TABLE `items` (
   `id_category` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Дамп данных таблицы `items`
+--
+
+INSERT INTO `items` (`id`, `title`, `price`, `img`, `description`, `id_user`, `id_category`) VALUES
+(1, 'Hyper PC', 20000, 'NO', 'Компьютер Hyper PC с Nvidia RTX 4090, Intel Core i9, 32 ГБ ОЗУ', 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +113,14 @@ CREATE TABLE `user` (
   `password` text NOT NULL,
   `name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `user`
+--
+
+INSERT INTO `user` (`id`, `is_admin`, `email`, `password`, `name`) VALUES
+(1, 1, 'root', '12345678B', 'root'),
+(2, 0, 'qwerty@mail.ru', '12345678B', 'qwerty');
 
 --
 -- Индексы сохранённых таблиц
@@ -140,7 +170,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `feedback`
@@ -152,7 +182,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT для таблицы `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `rent`
@@ -164,7 +194,7 @@ ALTER TABLE `rent`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

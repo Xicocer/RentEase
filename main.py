@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.uic import loadUi
 import database.db as db
+import catalog
 
 class Login(QDialog):
     def __init__(self):
@@ -15,10 +16,15 @@ class Login(QDialog):
     def loginfunction(self):
         email=self.email.text()
         password=self.password.text()
+        print(email)
+        print(password)
         result = db.auth(email, password)
-        if result != "Данные введены не верно":
+        if result != "Данные введены неверно":
+            widget.close()
+            catalog.create_catalog()
             print("Successfully logged in with email: ", email, "and password:", password)
         else:
+            self.error.setText(result)
             print(result)
 
     def gotocreate(self):
@@ -47,6 +53,7 @@ class CreateAcc(QDialog):
                 widget.addWidget(login)
                 widget.setCurrentIndex(widget.currentIndex()+1)
             else:
+                self.error.setText(result)
                 print(result)
 
 
