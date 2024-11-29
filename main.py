@@ -15,8 +15,11 @@ class Login(QDialog):
     def loginfunction(self):
         email=self.email.text()
         password=self.password.text()
-        if db.auth(email, password):
+        result = db.auth(email, password)
+        if result != "Данные введены не верно":
             print("Successfully logged in with email: ", email, "and password:", password)
+        else:
+            print(result)
 
     def gotocreate(self):
         createacc=CreateAcc()
@@ -32,14 +35,19 @@ class CreateAcc(QDialog):
         self.confirmpass.setEchoMode(QtWidgets.QLineEdit.Password)
 
     def createaccfunction(self):
+        name = self.name.text()
         email = self.email.text()
         if self.password.text()==self.confirmpass.text():
             password=self.password.text()
-            if db.reg(str(email), str(password)):
+            password_confirm = self.confirmpass.text()
+            result = db.reg(str(name), str(email), str(password), str(password_confirm))
+            if result == "Вы успешно зарегистрировались":
                 print("Successfully created acc with email: ", email, "and password: ", password)
-            login=Login()
-            widget.addWidget(login)
-            widget.setCurrentIndex(widget.currentIndex()+1)
+                login=Login()
+                widget.addWidget(login)
+                widget.setCurrentIndex(widget.currentIndex()+1)
+            else:
+                print(result)
 
 
 
