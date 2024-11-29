@@ -16,16 +16,10 @@ class Login(QDialog):
     def loginfunction(self):
         email=self.email.text()
         password=self.password.text()
-        print(email)
-        print(password)
         result = db.auth(email, password)
         if result != "Данные введены неверно":
             widget.close()
             catalog.create_catalog()
-            print("Successfully logged in with email: ", email, "and password:", password)
-        else:
-            self.error.setText(result)
-            print(result)
 
     def gotocreate(self):
         createacc=CreateAcc()
@@ -48,13 +42,9 @@ class CreateAcc(QDialog):
             password_confirm = self.confirmpass.text()
             result = db.reg(str(name), str(email), str(password), str(password_confirm))
             if result == "Вы успешно зарегистрировались":
-                print("Successfully created acc with email: ", email, "and password: ", password)
                 login=Login()
                 widget.addWidget(login)
                 widget.setCurrentIndex(widget.currentIndex()+1)
-            else:
-                self.error.setText(result)
-                print(result)
 
 
 

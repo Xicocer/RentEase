@@ -39,10 +39,8 @@ def auth(email, password):
     cursor.execute(f'SELECT * FROM `user` WHERE `email`="{email}" AND `password` = "{password}"')
     result = cursor.fetchall()
     if len(result)==0:
-        print("Данные введены неверно")
         return "Данные введены неверно"
     else:
-        print(result)
         return result
 
 def get_feadbacks(id_item):
